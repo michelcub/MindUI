@@ -1,0 +1,67 @@
+# Backend
+backend/.venv
+backend/venv
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/*.egg-info
+backend/dist
+backend/build
+backend/*.db
+backend/.env
+backend/.env.local
+backend/.pytest_cache
+backend/.mypy_cache
+backend/.ruff_cache
+backend/.coverage
+backend/htmlcov
+backend/site-packages
+
+# Frontend
+node_modules
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+frontend/*.local
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/.vite
+frontend/coverage
+frontend/.vitest
+*.tsbuildinfo
+.eslintcache
+npm-debug.log*
+yarn-error.log*
+.turbo
+dist-ssr
+.next
+.turbopack
+
+# IDE
+.vscode
+.vscode/settings.json
+.idea
+.idea/*
+*.swp
+*.swo
+*~
+.project
+.classpath
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Misc
+.env.*.local
+*.log
+.cache
