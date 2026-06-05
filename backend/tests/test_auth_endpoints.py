@@ -322,3 +322,5 @@ class TestMeEndpoint:
         client.cookies.set("access_token", expired_token)
         response = await client.get("/api/v1/auth/me")
         assert response.status_code == 401
+
+
