@@ -1,0 +1,44 @@
+{
+  "header": {
+    "title": "AI Studio",
+    "subtitle": "Tu espacio de trabajo impulsado por IA"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "confirm": "Confirmar",
+    "close": "Cerrar"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español"
+  },
+  "auth": {
+    "email": "Correo electrónico",
+    "name": "Nombre Completo",
+    "password": "Contraseña",
+    "signIn": "Iniciar sesión",
+    "signingIn": "Iniciando sesión...",
+    "register": "Crear cuenta",
+    "registering": "Creando cuenta...",
+    "registerTitle": "Crea tu cuenta",
+    "registerSubtitle": "Regístrate como primer administrador",
+    "passwordRequirements": "Mínimo 8 caracteres, al menos una mayúscula y un dígito",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "registrationClosed": "El registro está cerrado. Por favor inicia sesión con tu cuenta existente.",
+    "loginTitle": "Inicia sesión en AI Studio",
+    "loginSubtitle": "Ingresa tus credenciales para continuar",
+    "invalidResponse": "Respuesta del servidor inválida",
+    "rateLimited": "Demasiados intentos. Por favor espera antes de intentar de nuevo.",
+    "genericError": "Error en la operación. Inténtalo de nuevo.",
+    "loading": "Cargando..."
+  }
+}
