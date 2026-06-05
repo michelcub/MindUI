@@ -21,6 +21,10 @@ router = APIRouter()
 
 _auth_service = AuthService()
 
+from src.repositories import UserRepository
+
+_user_repo = UserRepository()
+
 
 def _set_auth_cookies(response: Response, access_token: str, refresh_token: str) -> None:
     """Set HttpOnly access and refresh token cookies on the response."""
@@ -42,6 +46,13 @@ def _set_auth_cookies(response: Response, access_token: str, refresh_token: str)
     )
 
 
+@router.get("/registration-open")
+async def registration_open(db: AsyncSession = Depends(get_db)) -> dict:
+    """Check if registration is open (no users exist yet)."""
+    count = await _user_repo.count(db)
+    return {"open": count == 0}
+
+
 @router.post("/register", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
 @limiter.limit("5/hour")
 async def register(
@@ -50,7 +61,7 @@ async def register(
     db: AsyncSession = Depends(get_db),
 ) -> User:
     """Register the first user (admin bootstrap). Closed after first registration."""
-    user = await _auth_service.register(db, user_in.email, user_in.password)
+    user = await _auth_service.register(db, user_in.email, user_in.name, user_in.password)
     return user
 
 

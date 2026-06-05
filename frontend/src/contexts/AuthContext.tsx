@@ -6,7 +6,10 @@ import apiClient from '../api/client'
 export const UserSchema = z.object({
   id: z.number(),
   email: z.string().email(),
+  name: z.string(),
   is_admin: z.boolean(),
+  is_staff: z.boolean(),
+  is_active: z.boolean(),
   created_at: z.string(),
 })
 
@@ -23,6 +26,7 @@ interface AuthState {
 // --- Context value shape ---
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>
+  register: (email: string, name: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -88,6 +92,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const register = async (email: string, name: string, password: string): Promise<void> => {
+    setState((prev) => ({ ...prev, error: null }))
+    try {
+      const response = await apiClient.post('/auth/register', { email, name, password })
+      const parsed = UserSchema.safeParse(response.data)
+      if (parsed.success) {
+        setState({ user: parsed.data, isLoading: false, isAuthenticated: true, error: null })
+      } else {
+        setState((prev) => ({
+          ...prev,
+          error: 'auth.invalidResponse',
+          isAuthenticated: false,
+          user: null,
+        }))
+      }
+    } catch (err: unknown) {
+      const errorMessage = extractErrorMessage(err)
+      setState((prev) => ({
+        ...prev,
+        error: errorMessage,
+        isAuthenticated: false,
+        user: null,
+      }))
+    }
+  }
+
   const logout = async (): Promise<void> => {
     try {
       await apiClient.post('/auth/logout')
@@ -101,6 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value: AuthContextValue = {
     ...state,
     login,
+    register,
     logout,
   }
 

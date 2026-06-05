@@ -15,6 +15,7 @@ from src.services import AuthService
 def make_user(
     user_id: int = 1,
     email: str = "test@example.com",
+    name: str = "Test User",
     password: str = "Pass1word",
     is_active: bool = True,
     is_admin: bool = False,
@@ -23,6 +24,7 @@ def make_user(
     user = User()
     user.id = user_id
     user.email = email
+    user.name = name
     user.hashed_password = get_password_hash(password)
     user.is_active = is_active
     user.is_admin = is_admin
@@ -73,7 +75,7 @@ class TestAuthServiceRegister:
         new_user = make_user(is_admin=True)
         mock_repo.create.return_value = new_user
 
-        result = await auth_service.register(mock_db, "new@example.com", "Pass1word")
+        result = await auth_service.register(mock_db, "new@example.com", "New User", "Pass1word")
 
         assert result.is_admin is True
         mock_repo.count.assert_awaited_once_with(mock_db)
@@ -84,7 +86,7 @@ class TestAuthServiceRegister:
         mock_repo.count.return_value = 1
 
         with pytest.raises(HTTPException) as exc_info:
-            await auth_service.register(mock_db, "second@example.com", "Pass1word")
+            await auth_service.register(mock_db, "second@example.com", "Second User", "Pass1word")
 
         assert exc_info.value.status_code == 403
         mock_repo.create.assert_not_awaited()
@@ -96,7 +98,7 @@ class TestAuthServiceRegister:
         new_user = make_user(email="correct@example.com")
         mock_repo.create.return_value = new_user
 
-        await auth_service.register(mock_db, "correct@example.com", "Pass1word")
+        await auth_service.register(mock_db, "correct@example.com", "Correct User", "Pass1word")
 
         call_args = mock_repo.create.call_args
         user_create: UserCreate = call_args[0][1]

@@ -1,14 +1,18 @@
 # Backend
 backend/.venv
 backend/venv
+backend/**/__pycache__
 **/__pycache__
 **/*.pyc
 **/*.pyo
 **/*.pyd
+**/*.so
 **/*.egg-info
+**/*.egg
 backend/dist
 backend/build
 backend/*.db
+backend/ai_studio.db
 backend/.env
 backend/.env.local
 backend/.pytest_cache
@@ -17,10 +21,15 @@ backend/.ruff_cache
 backend/.coverage
 backend/htmlcov
 backend/site-packages
+backend/.venv/
+.venv/
+venv/
+ENV/
+env/
 
 # Frontend
-node_modules
-frontend/node_modules
+node_modules/
+frontend/node_modules/
 frontend/dist
 frontend/dist-ssr
 frontend/*.local
@@ -30,14 +39,18 @@ frontend/.env.*.local
 frontend/.vite
 frontend/coverage
 frontend/.vitest
+frontend/.next
 *.tsbuildinfo
 .eslintcache
 npm-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 .turbo
 dist-ssr
 .next
 .turbopack
+.svelte-kit
+build/
 
 # IDE
 .vscode

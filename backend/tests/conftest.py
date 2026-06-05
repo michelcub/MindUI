@@ -55,6 +55,7 @@ async def test_user(db_session: AsyncSession) -> User:
     """Create an active non-admin test user."""
     user = User(
         email="user@test.com",
+        name="Test User",
         hashed_password=get_password_hash("Pass1word"),
         is_active=True,
         is_admin=False,
@@ -70,6 +71,7 @@ async def test_admin(db_session: AsyncSession) -> User:
     """Create an active admin test user."""
     user = User(
         email="admin@test.com",
+        name="Admin User",
         hashed_password=get_password_hash("Admin1pass"),
         is_active=True,
         is_admin=True,

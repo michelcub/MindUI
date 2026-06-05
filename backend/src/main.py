@@ -12,6 +12,7 @@ from src.api.v1.endpoints.auth import limiter
 from src.api.v1.router import api_router
 from src.core.config import get_settings
 from src.core.database import close_db, init_db
+from src.core.migrations import run_migrations
 
 settings = get_settings()
 
@@ -19,8 +20,12 @@ settings = get_settings()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan events."""
+    print("🚀 Starting application startup...")
+    await run_migrations()
     await init_db()
+    print("✅ Application ready")
     yield
+    print("🛑 Shutting down application...")
     await close_db()
 
 
