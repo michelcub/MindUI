@@ -61,7 +61,7 @@ async def register(
     db: AsyncSession = Depends(get_db),
 ) -> User:
     """Register the first user (admin bootstrap). Closed after first registration."""
-    user = await _auth_service.register(db, user_in.email, user_in.password)
+    user = await _auth_service.register(db, user_in.email, user_in.name, user_in.password)
     return user
 
 

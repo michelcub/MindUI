@@ -12,7 +12,7 @@ class TestRegisterEndpoint:
     async def test_first_registration_returns_201(self, client: AsyncClient, limiter_bypass: None):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "first@example.com", "password": "SecurePass1"},
+            json={"email": "first@example.com", "name": "First Admin", "password": "SecurePass1"},
         )
         assert response.status_code == 201
 
@@ -21,7 +21,7 @@ class TestRegisterEndpoint:
     ):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "first@example.com", "password": "SecurePass1"},
+            json={"email": "first@example.com", "name": "First Admin", "password": "SecurePass1"},
         )
         data = response.json()
         assert data["is_admin"] is True
@@ -32,14 +32,14 @@ class TestRegisterEndpoint:
     ):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "second@example.com", "password": "SecurePass1"},
+            json={"email": "second@example.com", "name": "Second User", "password": "SecurePass1"},
         )
         assert response.status_code == 403
 
     async def test_invalid_email_returns_422(self, client: AsyncClient, limiter_bypass: None):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "notanemail", "password": "SecurePass1"},
+            json={"email": "notanemail", "name": "User", "password": "SecurePass1"},
         )
         assert response.status_code == 422
 
@@ -48,7 +48,7 @@ class TestRegisterEndpoint:
     ):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "valid@example.com", "password": "Ab1"},
+            json={"email": "valid@example.com", "name": "User", "password": "Ab1"},
         )
         assert response.status_code == 422
 
@@ -57,7 +57,7 @@ class TestRegisterEndpoint:
     ):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "valid@example.com", "password": "password1"},
+            json={"email": "valid@example.com", "name": "User", "password": "password1"},
         )
         assert response.status_code == 422
 
@@ -66,7 +66,7 @@ class TestRegisterEndpoint:
     ):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "valid@example.com", "password": "Password"},
+            json={"email": "valid@example.com", "name": "User", "password": "Password"},
         )
         assert response.status_code == 422
 
@@ -75,12 +75,14 @@ class TestRegisterEndpoint:
     ):
         response = await client.post(
             "/api/v1/auth/register",
-            json={"email": "fields@example.com", "password": "SecurePass1"},
+            json={"email": "fields@example.com", "name": "Fields User", "password": "SecurePass1"},
         )
         data = response.json()
         assert "id" in data
         assert "email" in data
+        assert "name" in data
         assert "is_admin" in data
+        assert "is_staff" in data
         assert "is_active" in data
         assert "created_at" in data
         assert "password" not in data
@@ -193,6 +195,7 @@ class TestLoginEndpoint:
 
         inactive = UserModel(
             email="inactive@test.com",
+            name="Inactive User",
             hashed_password=get_password_hash("Pass1word"),
             is_active=False,
         )

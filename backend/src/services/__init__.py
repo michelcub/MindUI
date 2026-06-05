@@ -47,7 +47,7 @@ class AuthService:
         if not re.search(r"\d", password):
             raise ValueError("Password must contain at least one digit")
 
-    async def register(self, db: AsyncSession, email: str, password: str) -> User:
+    async def register(self, db: AsyncSession, email: str, name: str, password: str) -> User:
         """Register a new user. Only allowed when no users exist (first-user admin)."""
         count = await self.repository.count(db)
         if count > 0:
@@ -59,7 +59,7 @@ class AuthService:
         # First user becomes admin — count was 0 before this registration
         is_first_user = count == 0
 
-        user_in = UserCreate(email=email, password=password)
+        user_in = UserCreate(email=email, name=name, password=password)
         user = await self.repository.create(db, user_in, is_admin=is_first_user)
 
         return user

@@ -23,6 +23,7 @@
   },
   "auth": {
     "email": "Email",
+    "name": "Full Name",
     "password": "Password",
     "signIn": "Sign In",
     "signingIn": "Signing in...",

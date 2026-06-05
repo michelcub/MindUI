@@ -10,6 +10,7 @@ class UserCreate(BaseModel):
     """Schema for user registration."""
 
     email: EmailStr
+    name: str
     password: str
 
     @field_validator("password")
@@ -43,7 +44,9 @@ class UserPublic(BaseModel):
 
     id: int
     email: str
+    name: str
     is_admin: bool
+    is_staff: bool
     is_active: bool
     created_at: datetime
 

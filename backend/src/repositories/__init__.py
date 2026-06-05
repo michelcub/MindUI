@@ -16,6 +16,7 @@ class UserRepository:
         hashed = get_password_hash(user_in.password)
         user = User(
             email=user_in.email,
+            name=user_in.name,
             hashed_password=hashed,
             is_admin=is_admin,
         )

@@ -40,12 +40,12 @@ def repository() -> UserRepository:
 
 @pytest.fixture
 def user_create_data() -> UserCreate:
-    return UserCreate(email="test@example.com", password="SecurePass1")
+    return UserCreate(email="test@example.com", name="Test User", password="SecurePass1")
 
 
 class TestUserRepositoryCreate:
     async def test_create_returns_user(self, db_session: AsyncSession, repository: UserRepository):
-        user_in = UserCreate(email="user@example.com", password="Pass1word")
+        user_in = UserCreate(email="user@example.com", name="User", password="Pass1word")
         user = await repository.create(db_session, user_in)
         assert user.id is not None
         assert user.email == "user@example.com"
@@ -53,13 +53,13 @@ class TestUserRepositoryCreate:
     async def test_create_hashes_password(
         self, db_session: AsyncSession, repository: UserRepository
     ):
-        user_in = UserCreate(email="user@example.com", password="Pass1word")
+        user_in = UserCreate(email="user@example.com", name="User", password="Pass1word")
         user = await repository.create(db_session, user_in)
         assert user.hashed_password != "Pass1word"
         assert len(user.hashed_password) > 0
 
     async def test_create_sets_defaults(self, db_session: AsyncSession, repository: UserRepository):
-        user_in = UserCreate(email="user@example.com", password="Pass1word")
+        user_in = UserCreate(email="user@example.com", name="User", password="Pass1word")
         user = await repository.create(db_session, user_in)
         assert user.is_active is True
         assert user.is_admin is False
@@ -67,7 +67,7 @@ class TestUserRepositoryCreate:
     async def test_create_sets_timestamps(
         self, db_session: AsyncSession, repository: UserRepository
     ):
-        user_in = UserCreate(email="user@example.com", password="Pass1word")
+        user_in = UserCreate(email="user@example.com", name="User", password="Pass1word")
         user = await repository.create(db_session, user_in)
         assert user.created_at is not None
         assert user.updated_at is not None
@@ -75,7 +75,7 @@ class TestUserRepositoryCreate:
 
 class TestUserRepositoryGetByEmail:
     async def test_get_by_email_found(self, db_session: AsyncSession, repository: UserRepository):
-        user_in = UserCreate(email="find@example.com", password="Pass1word")
+        user_in = UserCreate(email="find@example.com", name="Find User", password="Pass1word")
         await repository.create(db_session, user_in)
         found = await repository.get_by_email(db_session, "find@example.com")
         assert found is not None
@@ -90,7 +90,7 @@ class TestUserRepositoryGetByEmail:
     async def test_get_by_email_case_sensitive(
         self, db_session: AsyncSession, repository: UserRepository
     ):
-        user_in = UserCreate(email="lower@example.com", password="Pass1word")
+        user_in = UserCreate(email="lower@example.com", name="Lower User", password="Pass1word")
         await repository.create(db_session, user_in)
         result = await repository.get_by_email(db_session, "LOWER@EXAMPLE.COM")
         assert result is None
@@ -98,7 +98,7 @@ class TestUserRepositoryGetByEmail:
 
 class TestUserRepositoryGetById:
     async def test_get_by_id_found(self, db_session: AsyncSession, repository: UserRepository):
-        user_in = UserCreate(email="byid@example.com", password="Pass1word")
+        user_in = UserCreate(email="byid@example.com", name="ByID User", password="Pass1word")
         created = await repository.create(db_session, user_in)
         found = await repository.get_by_id(db_session, created.id)
         assert found is not None
@@ -115,14 +115,14 @@ class TestUserRepositoryCount:
         assert count == 0
 
     async def test_count_after_create(self, db_session: AsyncSession, repository: UserRepository):
-        user_in = UserCreate(email="count@example.com", password="Pass1word")
+        user_in = UserCreate(email="count@example.com", name="Count User", password="Pass1word")
         await repository.create(db_session, user_in)
         count = await repository.count(db_session)
         assert count == 1
 
     async def test_count_multiple_users(self, db_session: AsyncSession, repository: UserRepository):
         for i in range(3):
-            user_in = UserCreate(email=f"user{i}@example.com", password="Pass1word")
+            user_in = UserCreate(email=f"user{i}@example.com", name=f"User {i}", password="Pass1word")
             await repository.create(db_session, user_in)
         count = await repository.count(db_session)
         assert count == 3

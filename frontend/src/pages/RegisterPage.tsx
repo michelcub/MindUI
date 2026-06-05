@@ -7,6 +7,7 @@ import apiClient from '../api/client'
 
 const RegisterSchema = z.object({
   email: z.string().email('Invalid email address'),
+  name: z.string().min(1, 'Name is required'),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
@@ -23,6 +24,7 @@ export default function RegisterPage() {
 
   const [formValues, setFormValues] = useState<RegisterFormValues>({
     email: '',
+    name: '',
     password: '',
   })
   const [submitting, setSubmitting] = useState(false)
@@ -67,7 +69,7 @@ export default function RegisterPage() {
 
     setSubmitting(true)
     try {
-      await register(formValues.email, formValues.password)
+      await register(formValues.email, formValues.name, formValues.password)
     } finally {
       setSubmitting(false)
     }
@@ -152,6 +154,26 @@ export default function RegisterPage() {
               onChange={handleChange}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 sm:text-sm"
               placeholder="you@example.com"
+            />
+          </div>
+
+          {/* Name */}
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              {t('auth.name')}
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              value={formValues.name}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 sm:text-sm"
+              placeholder="John Doe"
             />
           </div>
 
