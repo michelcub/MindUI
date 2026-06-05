@@ -324,3 +324,21 @@ class TestMeEndpoint:
         assert response.status_code == 401
 
 
+class TestRegistrationOpenEndpoint:
+    """Tests for GET /api/v1/auth/registration-open."""
+
+    async def test_no_users_returns_open_true(
+        self, client: AsyncClient, limiter_bypass: None
+    ):
+        response = await client.get("/api/v1/auth/registration-open")
+        assert response.status_code == 200
+        data = response.json()
+        assert data["open"] is True
+
+    async def test_with_users_returns_open_false(
+        self, client: AsyncClient, test_user: User, limiter_bypass: None
+    ):
+        response = await client.get("/api/v1/auth/registration-open")
+        assert response.status_code == 200
+        data = response.json()
+        assert data["open"] is False

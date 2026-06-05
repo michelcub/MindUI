@@ -26,11 +26,18 @@
     "password": "Password",
     "signIn": "Sign In",
     "signingIn": "Signing in...",
+    "register": "Create Account",
+    "registering": "Creating account...",
+    "registerTitle": "Create your account",
+    "registerSubtitle": "Register as the first administrator",
+    "passwordRequirements": "Minimum 8 characters, at least one uppercase letter and one digit",
+    "haveAccount": "Already have an account?",
+    "registrationClosed": "Registration is closed. Please sign in with your existing account.",
     "loginTitle": "Sign in to AI Studio",
     "loginSubtitle": "Enter your credentials to continue",
     "invalidResponse": "Invalid server response",
     "rateLimited": "Too many attempts. Please wait before trying again.",
-    "genericError": "Login failed. Please try again.",
+    "genericError": "Operation failed. Please try again.",
     "loading": "Loading..."
   }
 }

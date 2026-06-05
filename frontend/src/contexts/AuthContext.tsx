@@ -23,6 +23,7 @@ interface AuthState {
 // --- Context value shape ---
 interface AuthContextValue extends AuthState {
   login: (email: string, password: string) => Promise<void>
+  register: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -88,6 +89,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const register = async (email: string, password: string): Promise<void> => {
+    setState((prev) => ({ ...prev, error: null }))
+    try {
+      const response = await apiClient.post('/auth/register', { email, password })
+      const parsed = UserSchema.safeParse(response.data)
+      if (parsed.success) {
+        setState({ user: parsed.data, isLoading: false, isAuthenticated: true, error: null })
+      } else {
+        setState((prev) => ({
+          ...prev,
+          error: 'auth.invalidResponse',
+          isAuthenticated: false,
+          user: null,
+        }))
+      }
+    } catch (err: unknown) {
+      const errorMessage = extractErrorMessage(err)
+      setState((prev) => ({
+        ...prev,
+        error: errorMessage,
+        isAuthenticated: false,
+        user: null,
+      }))
+    }
+  }
+
   const logout = async (): Promise<void> => {
     try {
       await apiClient.post('/auth/logout')
@@ -101,6 +128,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value: AuthContextValue = {
     ...state,
     login,
+    register,
     logout,
   }
 
